@@ -12,4 +12,4 @@ class spacePirates:
 			self.health = 60
 			self.rockets = 8
 		else:
-			raise Exception('enemy num not valid')
+			raise Exception('ummmmm....')

@@ -1,16 +1,24 @@
 from gunship import Gunship
+import random
 
 class GameBoard:
 	def __init__(self, mapSize):
 		self.gameBoard = []
-		for i in range(0,int(mapSize[0])):
-			self.gameBoard.append([0]*int(mapSize[-1]))
+		for i in range(0,mapSize[0]):
+			self.gameBoard.append([0]*mapSize[1])
 
 	def isSpaceAvailible(xy):
-		return 0
+		while 
+		return True #returns bool
 
-	def placeAstroids(self):
-		return 0
+	def getPlacementLocation():
+		
+
+	def placeAstroids(self, num):
+		x = random.randrange(len(self.gameBoard))
+		y = random.randrange(len(self.gameBoard[0]))
+		print(x)
+		print(y)
 
 	#==== Utility Functions =============
 	def printBoard(self):
@@ -18,18 +26,22 @@ class GameBoard:
 			print(i)
 
 def setupGame():
-	mapSize = "9x9"
+	mapSize = (10,9) #same as 9x9
+	#implement ratio based on map size for following
+	numAstroids  = 10
+
+
+
 	#==set up game here==
 	Map = GameBoard(mapSize) #create map
 	Map.printBoard()
-	#create astroids
+	Map.placeAstroids(numAstroids)#create astroids
 	#create refulling stations
 	#create rocket locations	
 	#create abondoned ships (essentially chests)
 	#create enemies
 	#place enemines
 	samus = Gunship() #create Samus
-	samus.printStats()
 	#place samus
 	main()
 

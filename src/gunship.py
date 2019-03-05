@@ -11,3 +11,4 @@ class Gunship:
 		print("shields:", self.shields)
 		print("energy:", self.energy)
 		print("rockets:", self.rockets)
+
