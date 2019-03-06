@@ -9,7 +9,7 @@ class GameBoard:
 
 	def isSpaceAvailible(self,x,y):
 		# returns bool
-		return self.gameBoard[x][y] == 0
+		return not(self.gameBoard[x][y] != 0)
 
 	def getPlacementLocation(self):
 		# returns (x and y location as list)
@@ -20,46 +20,61 @@ class GameBoard:
 			if self.isSpaceAvailible(x,y):
 				return([x,y])
 
-	def placeElements(self,numA,numF,numR,numS):
-		while numA > 0:
+	def amountOfElements(self,mapSize):
+		# returns list of each amount of elements
+		self.numAstroids = round((0.09)*(mapSize[0] * mapSize[1]))
+		self.numFuel = round((0.06)*(mapSize[0] * mapSize[1]))
+		self.numRockets = round((0.08)*(mapSize[0] * mapSize[1]))
+		self.numShips = round((0.03)*(mapSize[0] * mapSize[1]))
+		return [self.numAstroids,self.numFuel,self.numRockets,self.numShips]
+
+	def placeElements(self,num):
+		while num[0] > 0:
 			coord = self.getPlacementLocation()
 			self.gameBoard[coord[0]][coord[1]] = 1
-			numA -= 1
-		while numF > 0:
+			num[0] -= 1
+		while num[1] > 0:
 			coord = self.getPlacementLocation()
 			self.gameBoard[coord[0]][coord[1]] = 2
-			numF -= 1
-		while numR > 0:
+			num[1] -= 1
+		while num[2] > 0:
 			coord = self.getPlacementLocation()
 			self.gameBoard[coord[0]][coord[1]] = 3
-			numR -= 1
-		while numS > 0:
+			num[2] -= 1
+		while num[3] > 0:
 			coord = self.getPlacementLocation()
 			self.gameBoard[coord[0]][coord[1]] = 4
-			numS -= 1
+			num[3] -= 1
 
 	#==== Utility Functions =============
 	def printBoard(self):
 		for i in self.gameBoard:
 			print(i)
 
-def setupGame():
-	mapSize = (9,9) #same as 9x9
-	#implement ratio based on map size for following
-	numAstroids  = 3
-	numFuel = 2
-	numRockets = 1
-	numShips = 2
+	def printNumOfElements(self,total):
+		print("Astroids:",self.numAstroids," %" + str(round((self.numAstroids/total) * 100)))
+		print("Astroids:",self.numFuel," %" + str(round((self.numFuel/total) * 100)))
+		print("Astroids:",self.numRockets," %" + str(round((self.numRockets/total) * 100)))
+		print("Astroids:",self.numShips," %" + str(round((self.numShips/total) * 100)))
 
+def setupGame():
+	mapSize = (10,10)
 	#==set up game here==
 	Map = GameBoard(mapSize) #create map
-	#create game elements
-	Map.placeElements(numAstroids,numFuel,numRockets,numShips)
-	Map.printBoard()
+
+	samus = Gunship() #create Samus
+	samus.setLocation(Map.getPlacementLocation())
+	Map.gameBoard[samus.location[0]][samus.location[1]] = 8
+
+	#create game elements [astroids, fuel, rockets, ships]
+	Map.placeElements(Map.amountOfElements(mapSize))
+
 	#create enemies
 	#place enemines
-	samus = Gunship() #create Samus
-	#place samus
+
+	Map.printBoard() # testing call
+	Map.printNumOfElements(mapSize[0]*mapSize[1]) # testing call
+
 	main()
 
 def main():
