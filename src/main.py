@@ -1,4 +1,5 @@
 from gunship import Gunship
+from spacePirates import SpacePirates
 import random
 
 class GameBoard:
@@ -28,6 +29,9 @@ class GameBoard:
 		self.numShips = round((0.03)*(mapSize[0] * mapSize[1]))
 		return [self.numAstroids,self.numFuel,self.numRockets,self.numShips]
 
+	def placeOnBoard(self,coord,symbol):
+		self.gameBoard[coord[0]][coord[1]] = symbol
+
 	def placeElements(self,num):
 		while num[0] > 0:
 			coord = self.getPlacementLocation()
@@ -46,6 +50,14 @@ class GameBoard:
 			self.gameBoard[coord[0]][coord[1]] = 4
 			num[3] -= 1
 
+	def placeEnemies(self,enemies,_type):
+		for enemy in enemies:
+			coord = self.getPlacementLocation()
+			if _type == "Grunt":
+				self.gameBoard[coord[0]][coord[1]] = 5
+			elif _type == "Captain":
+				self.gameBoard[coord[0]][coord[1]] = 6
+
 	#==== Utility Functions =============
 	def printBoard(self):
 		for i in self.gameBoard:
@@ -53,27 +65,47 @@ class GameBoard:
 
 	def printNumOfElements(self,total):
 		print("Astroids:",self.numAstroids," %" + str(round((self.numAstroids/total) * 100)))
-		print("Astroids:",self.numFuel," %" + str(round((self.numFuel/total) * 100)))
-		print("Astroids:",self.numRockets," %" + str(round((self.numRockets/total) * 100)))
-		print("Astroids:",self.numShips," %" + str(round((self.numShips/total) * 100)))
+		print("Fuel:    ",self.numFuel," %" + str(round((self.numFuel/total) * 100)))
+		print("Rockets: ",self.numRockets," %" + str(round((self.numRockets/total) * 100)))
+		print("Ships:   ",self.numShips," %" + str(round((self.numShips/total) * 100)))
+
+	def checkMap(self):
+		totalValues = [0,0,0,0,0,0,0,0]
+		for row in self.gameBoard:
+			for i in range(0,7):
+				totalValues[i] += row.count(i)
+			totalValues[7] += row.count(8)
+		return totalValues
 
 def setupGame():
 	mapSize = (10,10)
+	totalUnits = (mapSize[0]*mapSize[1])
 	#==set up game here==
 	Map = GameBoard(mapSize) #create map
 
-	samus = Gunship() #create Samus
-	samus.setLocation(Map.getPlacementLocation())
-	Map.gameBoard[samus.location[0]][samus.location[1]] = 8
+	Samus = Gunship() #create Samus
+	Samus.setLocation(Map.getPlacementLocation())
+	Map.gameBoard[Samus.location[0]][Samus.location[1]] = 8 #Place Samus
 
 	#create game elements [astroids, fuel, rockets, ships]
 	Map.placeElements(Map.amountOfElements(mapSize))
 
 	#create enemies
-	#place enemines
+	amountOfPirates = round((0.08)*totalUnits)
+	amountOfCaptains = round((0.02)*totalUnits)
+	spacePirate = [SpacePirates("Grunt") for i in range(0,amountOfPirates)]
+	pirateCaptain = [SpacePirates("Captain") for i in range(0,amountOfCaptains)]
 
+	#place enemines
+	Map.placeEnemies(spacePirate,spacePirate[0].enemyType)
+	Map.placeEnemies(pirateCaptain,pirateCaptain[0].enemyType)
+
+	# ==============test calls===================
 	Map.printBoard() # testing call
-	Map.printNumOfElements(mapSize[0]*mapSize[1]) # testing call
+	Map.printNumOfElements(totalUnits) # testing call
+	print(SpacePirates.enemiesRemaining()) # will be used in program l8r
+	print(Map.checkMap()) # testing call
+	print("Total of check:", sum(Map.checkMap())) # testing call
 
 	main()
 
