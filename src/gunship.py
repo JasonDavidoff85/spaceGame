@@ -2,7 +2,7 @@ class Gunship:
 	def __init__(self):
 		self.shields = 100
 		self.health = 50
-		self.energy = 300
+		self.energy = 1000
 		self.rockets = 0
 
 	def printStats(self):
