@@ -1,9 +1,10 @@
 import random
-
+VIEWSIZE = 5
 class GameBoard:
 	def __init__(self, mapSize):
 		self.gameBoard = []
 		self.numEnemies = 0
+		self.mapSize = mapSize
 		for i in range(0,mapSize[0]):
 			self.gameBoard.append([0]*mapSize[1])
 
@@ -62,8 +63,25 @@ class GameBoard:
 	def enemiesRemaining(self):
 		return self.numEnemies
 
-	def move(self):
-		return
+	def inBounds(self, *location):
+		return location[0] >= 0 and location[0] < self.mapSize[0] and location[1] >= 0 and location[1] < self.mapSize[1]
+
+	def isOccupied(self, location):
+		return self.gameBoard[location[0]][location[1]] != 0
+
+	def gameOver(self, msg):
+		print("=====Game over=====")
+		print(msg)
+		exit(0)
+
+
+	def show(self, location):
+		x = (location[0] // VIEWSIZE) * VIEWSIZE
+		y = (location[1] // VIEWSIZE) * VIEWSIZE
+		for i in range(x, x + VIEWSIZE):
+			if i <= self.mapSize[0]:
+				print(self.gameBoard[i][y:y+VIEWSIZE])
+
 
 	#==== Utility Functions =============
 	def printBoard(self):

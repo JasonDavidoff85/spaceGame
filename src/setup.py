@@ -2,8 +2,10 @@ from gameboard import GameBoard
 from gunship import Gunship
 from spacePirates import *
 
+
 mapSize = (10,10)
 Map = GameBoard(mapSize) #create map
+Samus = Gunship() #create Samus
 
 def setupGame():
 
@@ -11,7 +13,7 @@ def setupGame():
 	#==set up game here==
 	
 
-	Samus = Gunship() #create Samus
+	
 	Samus.setLocation(Map.getPlacementLocation())
 	Map.gameBoard[Samus.location[0]][Samus.location[1]] = 8 #Place Samus
 
